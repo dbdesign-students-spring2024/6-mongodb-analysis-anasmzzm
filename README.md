@@ -272,7 +272,7 @@ db.listings_clean.find({ "host_is_superhost": true }, { "host_id": 1 }).limit(2)
 ```
 This tells me that hosts with ID 51769509 and ID 3793516 are superhosts.
 
-Next, I find all the listings from these superhosts and only include the price, neighbourhood, host_name, and if they are a superhost.
+Next, I find all the listings from these superhosts and only include the price, neighbourhood, host_name.
 
 ```mongodb
 db.listings_clean.find({host_is_superhost:true, "host_id": { $in: [51769509, 3793516] }},{"name": 1, "price": 1, "neighbourhood": 1, "host_name": 1, "host_is_superhost": 1, "_id": 0})
@@ -297,7 +297,7 @@ db.listings_clean.find({host_is_superhost:true, "host_id": { $in: [51769509, 379
 ]
 ```
 
-To answer this question, I first had to find two superhosts. The first query looks for the first two superhosts in the data and returns their host_id. The following query had one criteria which would limit the listings to the specific host_id I wanted. It also contained a projection which limited the fields to name, price, neighbourhood, host_name, and host_is_superhost. This allows us to see that Turner and Audrey only have one Airbnb, but run it well enough to be superhosts.
+To answer this question, I first had to find two superhosts. The first query looks for the first two superhosts in the data and returns their host_id. The following query had one criteria which would limit the listings to the specific host_id I wanted. It also contained a projection which limited the fields to name, price, neighbourhood, host_name, and host_is_superhost. This allows us to see that Turner and Audrey only have one Airbnb, but ran it well enough to be superhosts.
 
 
 4. find all the unique host_name values (see the docs)
@@ -483,7 +483,7 @@ db.listings_clean.find({neighbourhood: "San Francisco", beds:{$gt:2}}, {_id:0, n
 ]
 ```
 
-This query returns all listings within the general San Francisco area that has more than 2 beds, as specified by the criteria. The data is returned in descending order by review_scores_rating. The projection limits the fields returned to name, beds, review_scores_rating, and price. This may be a useful query within the Airbnb app if someone were to be looking for accomodations that provide more than 2 beds, which would be ideal for big groups or families.
+This query returns all listings within the general San Francisco area that has more than 2 beds, as specified by the criteria. The data is returned in descending order by review_scores_rating. The projection limits the fields returned to name, beds, review_scores_rating, and price. This may be a useful query within the Airbnb app if someone were to be looking for accomodations that provides more than 2 beds, which would be ideal for big groups or families.
 
 
 6. show the number of listings per host
@@ -516,7 +516,7 @@ db.listings_clean.aggregate({$group: {_id: "$host_id", count: {$sum:1}}})
 ]
 ```
 
-This query counts the number of listings per host and then finding the sum. This would help Airbnb find out who their most successful or largest listers are.
+This query counts the number of listings per host and then finds the sum. This would help Airbnb find out who their most successful or largest listers are.
 
 
 7. find the average review_scores_rating per neighborhood, and only show those that are 4 or above, sorted in descending order of rating (see the docs)
@@ -534,4 +534,4 @@ db.listings_clean.aggregate([{$group:{_id: "$neighbourhood", avgRating: {$avg: "
 ]
 ```
 
-This query groups the listings by neighborhood and finds the average of review_scores_rating. It returns only those neighborhoods with an average rating above or equal to 4, and sorts the information in descending order. In our case, we only had three neighborhoods, but all of them were listed. This may tell prospective tourists that San Francisco is a generally great area to visit, but specifically in order from Hayes Valley, the general San Francisco area, and Noe Valley.
+This query groups the listings by neighborhood and finds the average of review_scores_rating. It returns neighborhoods with an average rating above or equal to 4, and sorts the neighborhoods in descending order. In our case, we only had three neighborhoods, but all of them were listed. This may tell prospective tourists that San Francisco is a generally great area to visit, but specifically to get accomodation in  Hayes Valley, then the general San Francisco area, and last but not least Noe Valley.
